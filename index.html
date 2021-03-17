@@ -34,8 +34,8 @@
   <div class="container container-fluid mt-3">
     <h1>Online-Shopping.de</h1>
     <h2>Let your shopping come to you!</h2>
-    <div id="itemsContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-xl-6">
-      <!-- <div class="col card">
+    <div id="itemsContainer" class="row">
+      <!-- <div class="col-12 col-sm-6 col-md-3 col-xl-2 card">
         <img src="${.imageURl}" class="card-img-top" alt="product's image">
         <div class="card-body">
           <h5 class="card-title">${.name}</h5>
@@ -53,7 +53,7 @@
   </div>
 
   <script>
-    window.unload = async () => {
+    window.onload = async () => {
 
       let itemsContainer = document.getElementById("itemsContainer")
 
@@ -71,7 +71,7 @@
         if (data.length > 0) {
           data.forEach(element => {
             let itemCard = document.createElement("div")
-            itemCard.classList.add("col", "card")
+            itemCard.classList.add("col-12", "col-sm-6", "col-md-3", "col-xl-2", "card")
             itemCard.innerHTML = `<img src="${data.imageURl}" class="card-img-top" alt="product's image">
             <div class="card-body">
               <h5 class="card-title">${data.name}</h5>
@@ -86,10 +86,11 @@
             itemsContainer.appendChild(itemCard)
           });
         } else {
-          itemsContainer.innerHTML = `<h1>***Sorry, no item availible at the moment***</h1>`
+          itemsContainer.innerHTML =
+            `<h3 class="itemsUnavailible">***Sorry, no item availible at the moment***</h3>`
         }
       } catch (error) {
-
+        console.log(error)
       }
     }
   </script>
