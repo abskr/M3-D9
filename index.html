@@ -67,19 +67,20 @@
         let data = await response.json()
 
         console.log(data)
+        console.log(data.length)
 
         if (data.length > 0) {
           data.forEach(element => {
             let itemCard = document.createElement("div")
             itemCard.classList.add("col-12", "col-sm-6", "col-md-3", "col-xl-2", "card")
-            itemCard.innerHTML = `<img src="${data.imageURl}" class="card-img-top" alt="product's image">
+            itemCard.innerHTML = `<img src="${element.imageUrl}" class="card-img-top" alt="product's image">
             <div class="card-body">
-              <h5 class="card-title">${data.name}</h5>
-              <p class="card-text">${data.description}</p>
+              <h5 class="card-title">${element.name}</h5>
+              <p class="card-text">${element.description}</p>
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item"><b>Brand</b>: ${data.brand}</li>
-              <li class="list-group-item"><b>Price</b>: ${data.price}</li>
+              <li class="list-group-item"><b>Brand</b>: ${element.brand}</li>
+              <li class="list-group-item"><b>Price</b>: ${element.price}</li>
             </ul>
             <div class="card-body">
               <button class="btn btn-sm btn-success">Add to cart</button>`

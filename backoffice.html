@@ -22,10 +22,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="./index.html">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="./backoffice.html">Backoffice <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="#">Backoffice <span class="sr-only">(current)</span></a>
         </li>
       </ul>
     </div>
@@ -59,7 +59,7 @@
   </div>
 
   <script>
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault()
 
       let itemData = {
@@ -71,6 +71,24 @@
       }
 
       console.log(itemData)
+
+      try {
+        let response = await fetch("https://striveschool-api.herokuapp.com/api/product/", {
+          method: 'POST',
+          body: JSON.stringify(itemData),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        })
+        if (response.ok) {
+          alert("Your product is now availible online!")
+        } else {
+          alert("Something went wrong...")
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
   </script>
   <script src="https://kit.fontawesome.com/eab15cbfad.js" crossorigin="anonymous"></script>
