@@ -8,7 +8,6 @@
   <meta name="Description" content="Enter your description here" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
   <title>Online-Shopping Catalogue</title>
 </head>
 
@@ -26,16 +25,17 @@
           <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Backoffice</a>
+          <a class="nav-link" href="./backoffice.html">Backoffice</a>
         </li>
       </ul>
     </div>
   </nav>
 
-  <div class="container container-fluid">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-xl-6">
-      <!-- template this -->
-      <div class="col card">
+  <div class="container container-fluid mt-3">
+    <h1>Online-Shopping.de</h1>
+    <h2>Let your shopping come to you!</h2>
+    <div id="itemsContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-xl-6">
+      <!-- <div class="col card">
         <img src="${.imageURl}" class="card-img-top" alt="product's image">
         <div class="card-body">
           <h5 class="card-title">${.name}</h5>
@@ -47,10 +47,52 @@
         </ul>
         <div class="card-body">
           <button class="btn btn-sm btn-success">Add to cart</button>
-        </div>
-      </div>
+        </div> -->
     </div>
   </div>
+  </div>
+
+  <script>
+    window.unload = async () => {
+
+      let itemsContainer = document.getElementById("itemsContainer")
+
+      try {
+        let response = await fetch("https://striveschool-api.herokuapp.com/api/product/", {
+          headers: {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        })
+
+        let data = await response.json()
+
+        console.log(data)
+
+        if (data.length > 0) {
+          data.forEach(element => {
+            let itemCard = document.createElement("div")
+            itemCard.classList.add("col", "card")
+            itemCard.innerHTML = `<img src="${data.imageURl}" class="card-img-top" alt="product's image">
+            <div class="card-body">
+              <h5 class="card-title">${data.name}</h5>
+              <p class="card-text">${data.description}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><b>Brand</b>: ${data.brand}</li>
+              <li class="list-group-item"><b>Price</b>: ${data.price}</li>
+            </ul>
+            <div class="card-body">
+              <button class="btn btn-sm btn-success">Add to cart</button>`
+            itemsContainer.appendChild(itemCard)
+          });
+        } else {
+          itemsContainer.innerHTML = `<h1>***Sorry, no item availible at the moment***</h1>`
+        }
+      } catch (error) {
+
+      }
+    }
+  </script>
 
   <script src="https://kit.fontawesome.com/eab15cbfad.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
