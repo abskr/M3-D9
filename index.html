@@ -34,6 +34,9 @@
   <div class="container container-fluid mt-5 pt-3">
     <h1>Online-Shopping.de</h1>
     <h2>Let your shopping come to you!</h2>
+    <div id="loadingSpinner" class="spinner-border text-primary d-none" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
     <div id="itemsContainer" class="row">
       <!-- <div class="col-12 col-sm-6 col-md-3 col-xl-2 card">
         <img src="${.imageURl}" class="card-img-top" alt="product's image">
@@ -58,6 +61,7 @@
       let itemsContainer = document.getElementById("itemsContainer")
 
       try {
+        document.getElementById("loadingSpinner").classList.toggle("d-none")
         let response = await fetch("https://striveschool-api.herokuapp.com/api/product/", {
           headers: {
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
@@ -65,6 +69,8 @@
         })
 
         let data = await response.json()
+
+        document.getElementById("loadingSpinner").classList.toggle("d-none")
 
         console.log(data)
         console.log(data.length)
