@@ -65,6 +65,7 @@
         <tr>
           <th scope="col">Product's name</th>
           <th scope="col">Product's price</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -119,11 +120,17 @@
         if (data.length > 0) {
           data.forEach(element => {
             let itemList = document.createElement("tr")
-            let i = 0
             itemList.innerHTML = `
             <td><a href="./detailpage.html?id=${element._id}">${element.name}
             </a></td>
-            <td>${element.price}</td>`
+            <td>${element.price}</td>
+            <td>
+              <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-danger" onclick="handleDelete('${element._id}')">DEL</button>
+                <button type="button" class="btn btn-success" onclick="handleEdit('${element._id}')">EDIT</button>
+              </div>
+            </td>
+            `
             tBody.appendChild(itemList)
           });
         } else {
@@ -133,6 +140,10 @@
       } catch (error) {
         console.log(error)
       }
+    }
+
+    const handleEdit = (_id) => {
+      window.location.assign("backoffice.html?id=" + _id);
     }
 
     const handleSubmit = async (e) => {
@@ -185,24 +196,8 @@
         console.log(err)
       }
     }
-
-
-    const handleDelete = async () => {
-      let id = new URLSearchParams(window.location.search).get("id")
-      try {
-        let response = await fetch(mainUrl + id, {
-          method: 'DELETE'
-        })
-        if (response.ok) {
-          alert("item deleted")
-        } else {
-          alert("something wrong in the process")
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
   </script>
+  <script src="util.js"></script>
   <script src="https://kit.fontawesome.com/eab15cbfad.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>

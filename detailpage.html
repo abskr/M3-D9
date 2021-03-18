@@ -52,7 +52,7 @@
         itemCard.classList.add("card", "mb-3", "w-100")
         itemCard.innerHTML = `<div class="row no-gutters">
           <div class="col-md-4">
-            <img src="${data.imageUrl}" alt="product's Image" style="max-width: 25vw;">
+            <img src="${data.imageUrl}" alt="product's Image" style="max-width: 300px;">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -72,29 +72,13 @@
         console.log(error)
       }
     }
-    const handleDelete = async () => {
-      try {
-        let response = await fetch(mainUrl + id, {
-          method: 'DELETE',
-          headers: {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
-          }
-        })
-        if (response.ok) {
-          alert("item deleted")
-          window.location.assign("backoffice.html")
-        } else {
-          alert("something went wrong. (Contact your dev)")
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
+
 
     const handleEdit = () => {
       window.location.assign("backoffice.html?id=" + id);
     }
   </script>
+  <script src="util.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
