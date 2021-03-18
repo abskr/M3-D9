@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="Description" content="Enter your description here" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+  <title>Item's detail</title>
+</head>
+
+<body>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#"><i class="fas fa-shopping-bag"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="./index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./backoffice.html">Backoffice</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="mainContainer" class="container mt-5 pt-3">
+    <!--tempate this-->
+  </div>
+
+  <script>
+    const mainUrl = "https://striveschool-api.herokuapp.com/api/product/"
+    let id = new URLSearchParams(window.location.search).get("id")
+    window.onload = async () => {
+      try {
+        let response = await fetch(mainUrl + id, {
+          headers: {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        })
+        let data = await response.json()
+        console.log(data)
+
+        const mainContainer = document.getElementById("mainContainer")
+        const itemCard = document.createElement("div")
+        itemCard.classList.add("card", "mb-3", "w-100")
+        itemCard.innerHTML = `<div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="${data.imageUrl}" alt="product's Image" style="max-width: 25vw;">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">${data.name}</h5>
+              <p class="card-text">${data.description}</p>
+              <p class="card-text"><small class="text-muted"><b>Brand</b>: ${data.brand}<br><b>Price</b>: ${data.price}</small>
+              </p>
+              <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-danger" onclick="handleDelete()">DEL</button>
+                <button type="button" class="btn btn-success" onclick="handleEdit()">EDIT</button>
+              </div>
+            </div>
+          </div>
+        </div>`
+        mainContainer.appendChild(itemCard)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    const handleDelete = async () => {
+      try {
+        let response = await fetch(mainUrl + id, {
+          method: 'DELETE',
+          headers: {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        })
+        if (response.ok) {
+          alert("item deleted")
+          window.location.assign("backoffice.html")
+        } else {
+          alert("something went wrong. (Contact your dev)")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const handleEdit = () => {
+      window.location.assign("backoffice.html?id=" + id);
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

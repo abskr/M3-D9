@@ -32,7 +32,7 @@
   </nav>
 
   <div class="container mt-5 pt-3">
-    <h1>Input your product's details</h1>
+    <h1 id="webHeading"></h1>
     <form onsubmit="handleSubmit(event)">
       <div class="form-group">
         <label for="name">Product's name</label>
@@ -56,9 +56,85 @@
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <br>
+    <hr>
+    <br>
+
+    <table class="table text-center w-100">
+      <thead>
+        <tr>
+          <th scope="col">Product's name</th>
+          <th scope="col">Product's price</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!--template this-->
+
+      </tbody>
+    </table>
   </div>
 
   <script>
+    const mainUrl = "https://striveschool-api.herokuapp.com/api/product/"
+    let id
+    window.onload = async () => {
+      id = new URLSearchParams(window.location.search).get("id")
+      let webHeading = document.getElementById("webHeading")
+      if (id) {
+        webHeading.innerText = "Edit your product's detail"
+        try {
+          let response = await fetch(mainUrl + id, {
+            headers: {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+            }
+          })
+          let data = await response.json()
+          console.log(data)
+
+          document.getElementById("name").value = data.name
+          document.getElementById("description").value = data.description
+          document.getElementById("brand").value = data.brand
+          document.getElementById("imageUrl").value = data.imageUrl
+          document.getElementById("price").value = data.price
+
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        webHeading.innerText = "Input your product's details"
+      }
+      let tBody = document.getElementById("tableBody")
+      try {
+        let response = await fetch(mainUrl, {
+          headers: {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        })
+
+        let data = await response.json()
+
+        console.log(data)
+        console.log(data.length)
+
+        if (data.length > 0) {
+          data.forEach(element => {
+            let itemList = document.createElement("tr")
+            let i = 0
+            itemList.innerHTML = `
+            <td><a href="./detailpage.html?id=${element._id}">${element.name}
+            </a></td>
+            <td>${element.price}</td>`
+            tBody.appendChild(itemList)
+          });
+        } else {
+          tBody.innerHTML =
+            `No item online`
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     const handleSubmit = async (e) => {
       e.preventDefault()
 
@@ -73,14 +149,25 @@
       console.log(itemData)
 
       try {
-        let response = await fetch("https://striveschool-api.herokuapp.com/api/product/", {
-          method: 'POST',
-          body: JSON.stringify(itemData),
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
-          }
-        })
+        if (id) {
+          let response = await fetch(mainUrl + id, {
+            method: 'PUT',
+            body: JSON.stringify(itemData),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+            }
+          })
+        } else {
+          let response = await fetch("https://striveschool-api.herokuapp.com/api/product/", {
+            method: 'POST',
+            body: JSON.stringify(itemData),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+            }
+          })
+        }
 
         if (response.ok) {
           alert("Your product is now availible online!")
@@ -94,6 +181,23 @@
         }
       } catch (err) {
         console.log(err)
+      }
+    }
+
+
+    const handleDelete = async () => {
+      let id = new URLSearchParams(window.location.search).get("id")
+      try {
+        let response = await fetch(mainUrl + id, {
+          method: 'DELETE'
+        })
+        if (response.ok) {
+          alert("item deleted")
+        } else {
+          alert("something wrong in the process")
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   </script>
