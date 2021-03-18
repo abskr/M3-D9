@@ -17,7 +17,7 @@
     <a class="navbar-brand" href="#"><i class="fas fa-shopping-bag"></i></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"><i class="fas fa-shopping-bag"></i></span>
+      <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
@@ -72,9 +72,9 @@
         if (data.length > 0) {
           data.forEach(element => {
             let itemCard = document.createElement("div")
-            itemCard.classList.add("col-12", "col-sm-6", "col-md-3", "col-xl-2", "card")
+            itemCard.classList.add("col-12", "col-sm-6", "col-md-3", "col-xl-2", "m-3", "card")
             itemCard.innerHTML = `<img src="${element.imageUrl}" class="card-img-top" alt="product's image">
-            <div class="card-body">
+            <div class="card-body p-0">
               <h5 class="card-title">${element.name}</h5>
               <p class="card-text">${element.description}</p>
             </div>

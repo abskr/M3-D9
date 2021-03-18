@@ -81,8 +81,14 @@
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
           }
         })
+
         if (response.ok) {
           alert("Your product is now availible online!")
+          document.getElementById("name").value = ""
+          document.getElementById("description").value = ""
+          document.getElementById("brand").value = ""
+          document.getElementById("imageUrl").value = ""
+          document.getElementById("price").value = ""
         } else {
           alert("Something went wrong...")
         }
